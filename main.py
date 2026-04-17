@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2026 Shensist Art Intelligence Studio (AIS)
+# License: GNU AGPLv3
+# Project: MelodyLight AI: 山海寻宝大乐园
+
 import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
