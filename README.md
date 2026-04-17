@@ -31,8 +31,19 @@
 pip install fastapi uvicorn
 ```
 
-## ⚖️ 版权与声明
-本工程受 **Shensist Art Intelligence Studio (AIS)** 严格版权保护。
-- **协议**：AGPL-3.0（强制开源回馈）。
-- **资产**：`assets/` 目录下的所有神兽形象及背景图版权归属于神思庭，仅限教育用途。
-- **官网**：[shensist.top](https://shensist.top/)
+### 2. 运行智能体
+```bash
+python main.py
+```
+访问 `http://localhost:8000` 即可进入山海经大乐园。
+
+## 🛡 版权说明与保护
+- **开发者**：神思庭艺术智能工作室 (Shensist AIS)
+- **架构师**：Shensist-Agent Architect
+- **开源协议**：AGPL-3.0 (最严格版权保护：强制开源回馈，禁止闭源商用)
+- **品牌主权**：所有视觉资产（`assets/` 目录下的神兽形象）及背景图版权归属于神思庭，受数字水印保护。
+
+---
+
+> 让每一个孩子在 AI 的光芒中，听见五千年的山海回响。
+> [官方网站](https://shensist.top/) | [GitHub 仓库](https://github.com/jinv2/MelodyLight_AI)
