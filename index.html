@@ -45,24 +45,43 @@
             padding: 2vh 0; box-sizing: border-box;
         }
 
-        /* 官方 LOGO */
-        .logo { position: absolute; top: 20px; left: 20px; height: 60px; z-index: 100; filter: drop-shadow(0 0 10px #000); }
+        /* 官方 LOGO 容器定位 */
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2000; /* 确保在最上层 */
+        }
+
+        .official-logo {
+            height: 60px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        /* 悬停效果：轻微放大并增加光晕，提示用户可以点击 */
+        .official-logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+        }
 
         /* 艺术标题 */
         .title {
             position: absolute;
-            top: 4vh; /* 距离 16:9 容器顶部的固定距离 */
+            top: 10vh; /* 降低了位置 */
             font-size: clamp(1.8rem, 4vw, 3.2rem);
             width: 100%;
             text-align: center;
             color: var(--gold);
             text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 20px rgba(255,215,0,0.8);
             z-index: 10;
+            pointer-events: none; /* 防止遮挡下方点击 */
         }
 
         .score-zone {
             position: absolute;
-            top: 25vh;
+            top: 28vh; /* 相应下移，保持视觉比例平衡 */
             width: 100%;
             text-align: center;
             z-index: 5;
@@ -157,7 +176,11 @@
 </head>
 <body>
     <div class="main-container">
-        <img src="/assets/logo_ts.webp" class="logo">
+        <div class="logo-container">
+            <a href="https://shensist.top/" target="_blank" title="访问神思庭官网">
+                <img src="/assets/logo_ts.webp" alt="Shensist Logo" class="official-logo">
+            </a>
+        </div>
         <div class="title">MelodyLight AI: 山海寻宝大乐园</div>
         
         <div class="score-zone">
