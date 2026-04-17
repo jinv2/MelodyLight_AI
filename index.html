@@ -99,12 +99,29 @@
         /* 版权信息 */
         footer { position: absolute; bottom: 15px; color: rgba(255,215,0,0.6); font-size: 0.9rem; text-shadow: 1px 1px 2px #000; }
         footer a { color: rgba(255,215,0,0.6); text-decoration: none; }
+        /* 评价语样式：金色、半透明、带有动态升起效果 */
+        #beast-message {
+            height: 60px;
+            font-size: 2rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px #000, 0 0 20px rgba(255, 215, 0, 0.5);
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .show-msg {
+            opacity: 1 !important;
+            transform: translateY(-10px);
+        }
     </style>
 </head>
 <body>
     <img src="/assets/logo_ts.webp" class="logo">
     <div class="title">MelodyLight AI: 山海寻宝大乐园</div>
     <div id="notation-flow"></div>
+    <div id="beast-message"></div>
 
     <div class="piano-keys">
         <div class="beast-key" data-note="1" style="--c:#FF4D4D; background-image:url('/assets/beast1.webp')"><div class="beast-name">白泽</div></div>
@@ -122,6 +139,7 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const colorMap = {'1':'#FF4D4D','2':'#FFA500','3':'#FFD700','4':'#4DFF88','5':'#4DFFFF','6':'#4D94FF','7':'#B34DFF'};
         const freqs = {'1':261.6,'2':293.6,'3':329.6,'4':349.2,'5':392,'6':440,'7':493.8};
+        const feedbackMsgs = ["神来之笔！", "仙气满满！", "余音绕梁！", "灵动非凡！", "节奏大师！"];
 
         function play(n) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -142,6 +160,17 @@
 
             const el = document.querySelector(`.beast-key[data-note="${n}"]`);
             el.classList.add('playing'); setTimeout(()=>el.classList.remove('playing'), 200);
+
+            // 新增：评价语逻辑
+            const msgEl = document.getElementById('beast-message');
+            msgEl.innerText = `【${n}】` + feedbackMsgs[Math.floor(Math.random() * feedbackMsgs.length)];
+            
+            msgEl.classList.remove('show-msg');
+            void msgEl.offsetWidth; // 触发重绘，确保动画重复播放
+            msgEl.classList.add('show-msg');
+
+            // 3秒后自动淡出
+            setTimeout(() => msgEl.classList.remove('show-msg'), 3000);
         }
 
         window.addEventListener('keydown', e => { if(freqs[e.key]) play(e.key); });
