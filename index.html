@@ -19,14 +19,30 @@
             user-select: none;
         }
         body {
-            margin: 0; padding: 20px 0; height: 100vh; width: 100vw;
-            background: url('/assets/beijing2.webp') no-repeat center center fixed;
+            background: #000;
+            margin: 0; padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 1. 强制将网页内容限制在一个 16:9 的可视框内 */
+        .main-container {
+            position: relative;
+            width: 100vw;
+            height: 56.25vw; /* 强制 16:9 (100 / 1.7777...) */
+            max-height: 100vh; /* 防止在大屏上溢出 */
+            margin: 0 auto;
+            background: url('/assets/beijing2.webp') no-repeat center center;
             background-size: cover;
-            background-position: center center;
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-            overflow: hidden; font-family: "Microsoft YaHei", sans-serif;
-            box-sizing: border-box;
+            overflow: hidden; /* 核心：锁定所有内容不溢出 */
+            top: 50%; /* 垂直居中 */
+            transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+            padding: 2vh 0; box-sizing: border-box;
         }
 
         /* 官方 LOGO */
@@ -34,28 +50,41 @@
 
         /* 艺术标题 */
         .title {
-            font-size: clamp(1.5rem, 5vw, 3.2rem); color: var(--gold);
-            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 20px rgba(255,215,0,0.8);
-            margin-bottom: 20px;
+            position: absolute;
+            top: 4vh; /* 距离 16:9 容器顶部的固定距离 */
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            width: 100%;
             text-align: center;
-            width: 90%;
+            color: var(--gold);
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 20px rgba(255,215,0,0.8);
+            z-index: 10;
+        }
+
+        .score-zone {
+            position: absolute;
+            top: 25vh;
+            width: 100%;
+            text-align: center;
+            z-index: 5;
         }
 
         /* 彩色简谱流 */
         #notation-flow {
             font-size: clamp(2.5rem, 8vw, 4.5rem);
-            height: 15vh;
+            height: auto;
             font-weight: bold;
         }
 
         /* 神兽按键 */
         .piano-keys {
+            position: absolute;
+            bottom: 12vh; /* 确保神兽在画面内，且给版权字留出空间 */
+            width: 100%;
             display: flex;
-            gap: 1.5vw;
-            margin-top: 50px;
-            width: 95%;
             justify-content: center;
+            gap: 1.5vw;
             flex-wrap: nowrap;
+            z-index: 20;
         }
         .beast-key {
             width: 12vw; 
@@ -97,7 +126,16 @@
         }
 
         /* 版权信息 */
-        footer { position: absolute; bottom: 15px; color: rgba(255,215,0,0.6); font-size: 0.9rem; text-shadow: 1px 1px 2px #000; }
+        footer {
+            position: absolute;
+            bottom: 15px; /* 强制锚定在 16:9 容器最底部 */
+            width: 100%;
+            text-align: center;
+            z-index: 1000;
+            color: rgba(255, 215, 0, 0.7);
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 2px #000;
+        }
         footer a { color: rgba(255,215,0,0.6); text-decoration: none; }
         /* 评价语样式：金色、半透明、带有动态升起效果 */
         #beast-message {
@@ -118,22 +156,27 @@
     </style>
 </head>
 <body>
-    <img src="/assets/logo_ts.webp" class="logo">
-    <div class="title">MelodyLight AI: 山海寻宝大乐园</div>
-    <div id="notation-flow"></div>
-    <div id="beast-message"></div>
+    <div class="main-container">
+        <img src="/assets/logo_ts.webp" class="logo">
+        <div class="title">MelodyLight AI: 山海寻宝大乐园</div>
+        
+        <div class="score-zone">
+            <div id="notation-flow"></div>
+            <div id="beast-message"></div>
+        </div>
 
-    <div class="piano-keys">
-        <div class="beast-key" data-note="1" style="--c:#FF4D4D; background-image:url('/assets/beast1.webp')"><div class="beast-name">白泽</div></div>
-        <div class="beast-key" data-note="2" style="--c:#FFA500; background-image:url('/assets/beast2.webp')"><div class="beast-name">麒麟</div></div>
-        <div class="beast-key" data-note="3" style="--c:#FFD700; background-image:url('/assets/beast3.webp')"><div class="beast-name">貔貅</div></div>
-        <div class="beast-key" data-note="4" style="--c:#4DFF88; background-image:url('/assets/beast4.webp')"><div class="beast-name">凤凰</div></div>
-        <div class="beast-key" data-note="5" style="--c:#4DFFFF; background-image:url('/assets/beast5.webp')"><div class="beast-name">应龙</div></div>
-        <div class="beast-key" data-note="6" style="--c:#4D94FF; background-image:url('/assets/beast6.webp')"><div class="beast-name">甪端</div></div>
-        <div class="beast-key" data-note="7" style="--c:#B34DFF; background-image:url('/assets/beast7.webp')"><div class="beast-name">青鸾</div></div>
+        <div class="piano-keys">
+            <div class="beast-key" data-note="1" style="--c:#FF4D4D; background-image:url('/assets/beast1.webp')"><div class="beast-name">白泽</div></div>
+            <div class="beast-key" data-note="2" style="--c:#FFA500; background-image:url('/assets/beast2.webp')"><div class="beast-name">麒麟</div></div>
+            <div class="beast-key" data-note="3" style="--c:#FFD700; background-image:url('/assets/beast3.webp')"><div class="beast-name">貔貅</div></div>
+            <div class="beast-key" data-note="4" style="--c:#4DFF88; background-image:url('/assets/beast4.webp')"><div class="beast-name">凤凰</div></div>
+            <div class="beast-key" data-note="5" style="--c:#4DFFFF; background-image:url('/assets/beast5.webp')"><div class="beast-name">应龙</div></div>
+            <div class="beast-key" data-note="6" style="--c:#4D94FF; background-image:url('/assets/beast6.webp')"><div class="beast-name">甪端</div></div>
+            <div class="beast-key" data-note="7" style="--c:#B34DFF; background-image:url('/assets/beast7.webp')"><div class="beast-name">青鸾</div></div>
+        </div>
+
+        <footer>© 2026 神思庭艺术智能工作室 (AIS) | <a href="https://shensist.top/">shensist.top</a></footer>
     </div>
-
-    <footer>© 2026 神思庭艺术智能工作室 (AIS) | <a href="https://shensist.top/">shensist.top</a></footer>
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
