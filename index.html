@@ -171,9 +171,40 @@
             opacity: 1 !important;
             transform: translateY(-10px);
         }
+
+        /* 旋转提示：仅在竖屏显示 */
+        #rotate-notice {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; color: var(--gold);
+            z-index: 9999; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        @media (orientation: portrait) {
+            #rotate-notice { display: flex; }
+            .main-container { display: none; }
+        }
+
+        .rotate-icon {
+            width: 80px; height: 80px; margin-bottom: 20px;
+            border: 4px solid var(--gold); border-radius: 10px;
+            position: relative; animation: rotateDevice 2s infinite;
+        }
+        @keyframes rotateDevice {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(90deg); }
+        }
     </style>
 </head>
 <body>
+    <div id="rotate-notice">
+        <div class="rotate-icon"></div>
+        <h2>请旋转手机进入横屏模式</h2>
+        <p>体验完整的山海经大乐园</p>
+    </div>
+
     <div class="main-container">
         <div class="logo-container">
             <a href="https://shensist.top/" target="_blank">
@@ -239,7 +270,23 @@
         }
 
         window.addEventListener('keydown', e => { if(freqs[e.key]) play(e.key); });
-        document.querySelectorAll('.beast-key').forEach(k => k.onclick = () => play(k.dataset.note));
+        
+        let hasInteracted = false;
+        function handleFirstInteraction(e) {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                const docEl = document.documentElement;
+                const requestFull = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+                if (requestFull) requestFull.call(docEl);
+            }
+        }
+
+        document.querySelectorAll('.beast-key').forEach(k => {
+            k.addEventListener('click', () => play(k.dataset.note));
+            k.addEventListener('click', handleFirstInteraction);
+        });
+        
+        document.querySelector('.logo-container').addEventListener('click', handleFirstInteraction);
     </script>
 </body>
 </html>
