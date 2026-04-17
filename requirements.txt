@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+mediapipe
+librosa
+mido
+pydantic
+python-multipart
+google-generativeai
+numpy
+# Lyria 3 SDK placeholder (when available)
